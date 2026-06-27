@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>從零做出你的第一個網路工具 · 三寶爸帶你做</title>
+<style>
+  :root{
+    --ink:#1a1410;
+    --paper:#f3ead9;
+    --paper-2:#ece0c8;
+    --brand:#c0392b;
+    --brand-dark:#9c2b1f;
+    --gold:#b8893a;
+    --warn:#d97706;
+    --warn-bg:#fff4e0;
+    --line:#d8c8a8;
+    --muted:#6b5d49;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+    line-height:1.78;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  .wrap{max-width:700px;margin:0 auto;padding:0 20px;}
+
+  header{padding:56px 0 40px;text-align:center;}
+  .eyebrow{font-size:13px;letter-spacing:4px;color:var(--gold);font-weight:700;margin-bottom:16px;}
+  h1{font-size:clamp(30px,8vw,46px);font-weight:900;line-height:1.18;letter-spacing:-1px;margin-bottom:18px;}
+  h1 .hl{color:var(--brand);}
+  .lede{font-size:16px;color:var(--muted);max-width:30em;margin:0 auto;}
+  .stamp{display:inline-block;margin-top:24px;padding:9px 20px;border:2px solid var(--brand);border-radius:40px;color:var(--brand);font-weight:800;font-size:14px;}
+
+  .intro{background:var(--paper-2);border:1px solid var(--line);border-radius:16px;padding:22px;margin:6px 0 40px;}
+  .intro p{font-size:15px;}
+  .intro strong{color:var(--brand-dark);}
+
+  .phase{font-size:13px;letter-spacing:2px;color:var(--gold);font-weight:800;margin:46px 0 0;text-transform:uppercase;}
+
+  .step{position:relative;padding:26px 0 30px;border-top:1px solid var(--line);}
+  .step-head{display:flex;align-items:flex-start;gap:15px;margin-bottom:12px;}
+  .num{flex:0 0 auto;width:44px;height:44px;border-radius:11px;background:var(--brand);color:#fff;font-weight:900;font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 0 var(--brand-dark);}
+  .step h2{font-size:20px;font-weight:800;line-height:1.35;padding-top:4px;}
+  .body{padding-left:59px;}
+  @media(max-width:480px){.body{padding-left:0;}}
+
+  ol.do{list-style:none;counter-reset:mini;margin:6px 0 0;}
+  ol.do li{counter-increment:mini;position:relative;padding:8px 0 8px 30px;font-size:15.5px;border-bottom:1px dashed var(--line);}
+  ol.do li:last-child{border-bottom:none;}
+  ol.do li::before{content:counter(mini);position:absolute;left:0;top:8px;width:21px;height:21px;border-radius:50%;background:var(--gold);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+  code{background:#fff;border:1px solid var(--line);border-radius:6px;padding:1px 7px;font-family:"SF Mono",ui-monospace,monospace;font-size:13.5px;color:var(--brand-dark);font-weight:600;word-break:break-all;}
+
+  .warn{margin-top:14px;background:var(--warn-bg);border:1px solid #f0c886;border-left:5px solid var(--warn);padding:13px 15px;border-radius:0 10px 10px 0;font-size:14.5px;}
+  .warn b{color:var(--warn);}
+  .tip{margin-top:14px;background:#fff;border-left:4px solid var(--gold);padding:12px 15px;border-radius:0 10px 10px 0;font-size:14px;color:var(--muted);}
+  .tip b{color:var(--ink);}
+
+  .stuck{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:14px;}
+  .stuck .q{font-weight:800;font-size:14.5px;color:var(--brand-dark);margin-bottom:5px;}
+  .stuck .q::before{content:"卡住了?";display:inline-block;background:var(--brand);color:#fff;font-size:11px;padding:1px 8px;border-radius:20px;margin-right:8px;vertical-align:middle;font-weight:700;}
+  .stuck .a{font-size:14px;color:var(--ink);}
+
+  .result{margin:44px 0;text-align:center;background:var(--ink);color:var(--paper);border-radius:18px;padding:32px 24px;}
+  .result .big{font-size:23px;font-weight:900;margin-bottom:8px;}
+  .result code{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#f0d9a0;}
+  .result p{font-size:14px;color:#cbb99a;margin-top:10px;}
+
+  footer{text-align:center;padding:18px 0 56px;border-top:1px solid var(--line);}
+  footer .quote{font-size:16px;font-weight:700;color:var(--brand-dark);margin-bottom:18px;}
+  .line-btn{display:inline-block;background:#06c755;color:#fff;text-decoration:none;padding:13px 30px;border-radius:40px;font-weight:800;font-size:15px;box-shadow:0 4px 0 #04a548;}
+  footer small{display:block;margin-top:20px;color:var(--muted);font-size:12px;}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:.55s ease;}
+  .reveal.in{opacity:1;transform:none;}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;}}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="eyebrow">三寶爸帶你做 · 學生自學版</div>
+  <h1>從零做出<br>你的<span class="hl">第一個</span>網路工具</h1>
+  <p class="lede">沒寫過程式、只有一支手機也沒關係。照著這份做,你會親手做出一個能放上網、別人打開就能用的工具。卡住的地方我都先幫你寫好解法了。</p>
+  <div class="stamp">手機或電腦都能做</div>
+</header>
+
+<div class="wrap">
+
+  <div class="intro reveal">
+    <p>整個過程分成三大關:<strong>① 準備帳號和 AI → ② 開一個免費網站空間 → ③ 把工具貼上去</strong>。每一步都有「卡住了?」的提示,先自己照著走,真的卡死再傳訊息問三寶爸。慢慢來,做完你就是會做工具的人了。</p>
+  </div>
+
+  <!-- ============ 第一關 ============ -->
+  <div class="phase reveal">第一關 · 準備工具</div>
+
+  <section class="step reveal">
+    <div class="step-head"><div class="num">1</div><div><h2>下載 Claude(幫你寫程式的 AI)</h2></div></div>
+    <div class="body">
+      <ol class="do">
+        <li>打開手機 <b>App Store</b></li>
+        <li>搜尋 <code>Claude</code>(注意是 Claude,不是 cloud)</li>
+        <li>找到橘色花朵圖示、<b>「Claude by Anthropic」</b>,按「取得」下載</li>
+        <li>打開、註冊登入(用 Email 或 Google 帳號都行)</li>
+      </ol>
+      <div class="stuck"><div class="q"><span></span>搜尋打錯成 cloud 也沒關係,通常還是找得到。認圖示:橘色底、白色像花/星星的標誌就對了。</div></div>
+      <div class="tip"><b>免費就夠:</b>Claude 免費下載、免費用。裡面有付費進階版,但做工具用免費的完全足夠。</div>
+    </div>
+  </section>
+
+  <section class="step reveal">
+    <div class="step-head"><div class="num">2</div><div><h2>註冊一個 GitHub 帳號(放網站的地方)</h2></div></div>
+    <div class="body">
+      <ol class="do">
+        <li>用瀏覽器(Safari 或 Chrome)開 <code>github.com</code></li>
+        <li>按 <b>Sign up</b>(註冊),用 Email 設定帳號密碼</li>
+        <li>記住你的帳號名稱,等一下網址會用到</li>
+      </ol>
+      <div class="warn"><b>重要:</b>後面所有 GitHub 的操作,都建議用<b>瀏覽器</b>開 github.com 來做,<b>不要用 GitHub App</b>。App 是簡化版,很多設定(像把網站公開)它根本沒有,會讓你白卡半天。</div>
+    </div>
+  </section>
+
+  <!-- ============ 第二關 ============ -->
+  <div class="phase reveal">第二關 · 開一個免費網站空間</div>
+
+  <section class="step reveal">
+    <div class="step-head"><div class="num">3</div><div><h2>開一個新倉庫(你的網站資料夾)</h2></div></div>
+    <div class="body">
+      <ol class="do">
+        <li>登入後,按右上角的 <b>「+」</b> → <b>New repository</b></li>
+        <li>Repository name 取一個英文名字,例如 <code>my-tool</code></li>
+        <li>下面選 <b>Public</b>(公開)— 這很重要,免費網站一定要公開</li>
+        <li>勾選 <b>Add a README file</b></li>
+        <li>按綠色的 <b>Create repository</b></li>
+      </ol>
+      <div class="warn"><b>一定要選 Public!</b>如果不小心開成 Private(私人),免費網站功能用不了,後面會卡住。下一步教你怎麼補救。</div>
+    </div>
+  </section>
+
+
+
+  <section class="step reveal">
+    <div class="step-head"><div class="num">4</div><div><h2>確認倉庫是「公開」的</h2></div></div>
+    <div class="body">
+      <p>如果第 3 步已經選了 Public,這步可以跳過。<b>如果不小心開成 Private(名字旁邊有鎖頭),照下面改:</b></p>
+      <ol class="do">
+        <li>用瀏覽器開 <code>github.com/你的帳號/倉庫名/settings</code></li>
+        <li>頁面<b>一直往最下面拉到底</b>,找到紅色框 <b>Danger Zone</b></li>
+        <li>找 <b>Change repository visibility</b> → 點 <b>Change visibility</b></li>
+        <li>選 <b>Make public</b>(改成公開)</li>
+        <li>按「I have read and understand these effects」</li>
+        <li>它叫你打倉庫全名確認,照打 <code>你的帳號/倉庫名</code>,確認</li>
+      </ol>
+      <div class="stuck"><div class="q"><span></span>跳出來的那些英文(程式碼會被大家看到…)不用怕,那正是免費網站要的,放心確認。改好後鎖頭會消失。</div></div>
+      <div class="warn"><b>別按 Upgrade!</b>過程中如果看到「Upgrade」按鈕,那是要付錢的,不要按。我們全程走免費。</div>
+    </div>
+  </section>
+
+  <section class="step reveal">
+    <div class="step-head"><div class="num">5</div><div><h2>開啟免費網站功能(GitHub Pages)</h2></div></div>
+    <div class="body">
+      <ol class="do">
+        <li>進倉庫,點上面那排的 <b>Settings</b>(設定/齒輪)</li>
+        <li>左邊選單找 <b>Pages</b></li>
+        <li>Source(來源)選 <b>Deploy from a branch</b>(從分支部署)</li>
+        <li>Branch(分支)選 <b>main</b>,旁邊資料夾保持 <b>/ (root)</b></li>
+        <li>按 <b>Save</b>(儲存)</li>
+      </ol>
+      <div class="stuck"><div class="q"><span></span>Source 預設可能是「GitHub Actions」,太複雜,記得改成「Deploy from a branch」就好。</div></div>
+      <div class="stuck"><div class="q"><span></span>Save 按鈕變灰色按不動?那是正常的,代表已經存好了,不用再按。</div></div>
+      <div class="tip"><b>會看到網址:</b>設定好後,Pages 頁面上方會出現一行網址,長這樣 <code>https://你的帳號.github.io/倉庫名/</code>。記下來,這就是你的網站。現在打開還是空的,正常,因為工具還沒貼。</div>
+    </div>
+  </section>
+
+  <!-- ============ 第三關 ============ -->
+  <div class="phase reveal">第三關 · 把工具放進去</div>
+
+  <section class="step reveal">
+    <div class="step-head"><div class="num">6</div><div><h2>叫 Claude 幫你寫工具</h2></div></div>
+    <div class="body">
+      <p>打開 Claude,把你想做的工具講給它聽,加上這幾個關鍵要求:</p>
+      <ol class="do">
+        <li>「幫我做一個 ___ 的工具」(填你想做的,例:貼文產生器、計算機)</li>
+        <li>「請做成<b>單一個 HTML 檔</b>,全部寫在一起」</li>
+        <li>「<b>不要用 alert、confirm、prompt</b>」(放網頁後這些會失效)</li>
+        <li>「給我<b>完整可以直接複製的程式碼</b>,不要分段」</li>
+      </ol>
+      <div class="tip"><b>越小越好:</b>第一個工具不要貪心。一個「填欄位、按一下、出結果」的小工具最好做、最快有成就感。</div>
+    </div>
+  </section>
+
+  <section class="step reveal">
+    <div class="step-head"><div class="num">7</div><div><h2>把程式碼貼進網站(最後一步!)</h2></div></div>
+    <div class="body">
+      <div class="warn"><b>貼之前一定要先做:關掉瀏覽器的「自動翻譯」!</b><br>Chrome / Safari 的自動翻譯會在你貼程式碼時,偷偷把英文指令翻成中文,程式就壞了,而且你完全不會發現。動手前先把這個網站的翻譯關掉。</div>
+      <ol class="do">
+        <li>關掉自動翻譯後,進你的倉庫</li>
+        <li>按 <b>Add file → Create new file</b></li>
+        <li>檔名一定要打 <code>index.html</code>(一個字都不能錯)</li>
+        <li>把 Claude 給你的程式碼<b>整段貼進去</b></li>
+        <li>往下按 <b>Commit changes</b>(儲存)</li>
+        <li>等一兩分鐘,打開你的網址 → 工具就出現了!</li>
+      </ol>
+      <div class="stuck"><div class="q"><span></span>打開網址沒東西/出現 404?等個 2-3 分鐘再重新整理。剛 Commit 完需要一點時間才會更新。</div></div>
+      <div class="tip"><b>以後要改:</b>回 GitHub 點 <code>index.html</code> 旁的鉛筆圖示,改完再 Commit,網頁過一兩分鐘自動更新。</div>
+    </div>
+  </section>
+
+  <div class="result reveal">
+    <div class="big">你的工具上線了 🎉</div>
+    <code>https://你的帳號.github.io/倉庫名/</code>
+    <p>把這個網址丟進 LINE、FB,任何人點開就能用。免費、永久、隨時可改。</p>
+  </div>
+
+</div>
+
+<footer class="wrap reveal">
+  <p class="quote">「AI 放大選項,人做最後決定。」</p>
+  <a class="line-btn" href="https://lin.ee/YewRM1L">卡住了?加 LINE 找三寶爸</a>
+  <small>三寶爸的脆皮烤豬 · 一支手機,做出自己的 AI 工具</small>
+</footer>
+
+<script>
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
